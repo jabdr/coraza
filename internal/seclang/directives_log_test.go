@@ -23,6 +23,7 @@ import (
 
 func TestSecAuditLogDirectivesConcurrent(t *testing.T) {
 	waf := corazawaf.NewWAF()
+	defer waf.Close()
 	parser := NewParser(waf)
 
 	auditpath := t.TempDir()

@@ -416,5 +416,15 @@ func (w *WAF) Validate() error {
 }
 
 func (w *WAF) Close() error {
-	return w.Logger.Close()
+	var err error = nil
+	auditLogWriter := w.auditLogWriter
+	if auditLogWriter != nil {
+		err = auditLogWriter.Close()
+	}
+	err1 := w.Logger.Close()
+
+	if err != nil {
+		return err
+	}
+	return err1
 }
