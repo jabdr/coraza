@@ -4,6 +4,7 @@
 package transformations
 
 import (
+	"path/filepath"
 	"strings"
 )
 
@@ -12,6 +13,18 @@ func normalisePathWin(data string) (string, bool, error) {
 	if leng < 1 {
 		return data, false, nil
 	}
-	data = strings.ReplaceAll(data, "\\", "/")
-	return normalisePath(data)
+	clean := filepath.Clean(data)
+	if clean == "." {
+		return "", true, nil
+	}
+
+	clean = strings.ReplaceAll(clean, "\\", "/")
+	if strings.HasPrefix(clean, "//") {
+		clean = "\\\\" + clean[2:]
+	}
+
+	if data[len(data)-1] == '/' || data[len(data)-1] == '\\' {
+		return clean + "/", true, nil
+	}
+	return clean, data != clean, nil
 }

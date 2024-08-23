@@ -5,6 +5,7 @@ package transformations
 
 import (
 	"path/filepath"
+	"strings"
 )
 
 func normalisePath(data string) (string, bool, error) {
@@ -16,6 +17,14 @@ func normalisePath(data string) (string, bool, error) {
 	if clean == "." {
 		return "", true, nil
 	}
+
+	if filepath.Separator == '\\' {
+		clean = strings.ReplaceAll(clean, "\\", "/")
+		if strings.HasPrefix(clean, "//") {
+			clean = "\\\\" + clean[2:]
+		}
+	}
+
 	if data[len(data)-1] == '/' {
 		return clean + "/", true, nil
 	}
