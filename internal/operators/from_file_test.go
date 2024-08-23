@@ -71,7 +71,7 @@ func TestLoadFromFileRelativePath(t *testing.T) {
 
 func TestLoadFromCustomFS(t *testing.T) {
 	fs := fstest.MapFS{}
-	fs[filepath.Join("animals", "bear.txt")] = &fstest.MapFile{Data: []byte("pooh"), Mode: 0755}
+	fs["animals/bear.txt"] = &fstest.MapFile{Data: []byte("pooh"), Mode: 0755}
 
 	content, err := loadFromFile("bear.txt", []string{"animals"}, fs)
 	if err != nil {
