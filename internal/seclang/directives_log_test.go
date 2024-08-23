@@ -67,6 +67,8 @@ func TestSecAuditLogDirectivesConcurrent(t *testing.T) {
 
 func TestDebugDirectives(t *testing.T) {
 	waf := corazawaf.NewWAF()
+	defer waf.Close()
+
 	tmp := filepath.Join(t.TempDir(), "tmp.log")
 	p := NewParser(waf)
 	err := directiveSecDebugLog(&DirectiveOptions{

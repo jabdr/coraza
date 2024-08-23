@@ -414,3 +414,7 @@ func (w *WAF) Validate() error {
 
 	return nil
 }
+
+func (w *WAF) Close() error {
+	return w.Logger.Close()
+}
