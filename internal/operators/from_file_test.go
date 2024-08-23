@@ -5,7 +5,6 @@ package operators
 
 import (
 	"os"
-	"path"
 	"path/filepath"
 	"testing"
 	"testing/fstest"
@@ -47,7 +46,7 @@ func TestLoadFromFileNoExist(t *testing.T) {
 func TestLoadFromFileAbsolutePath(t *testing.T) {
 	testDir, testFile := getTestFile(t)
 
-	content, err := loadFromFile(path.Join(testDir, testFile), nil, io.OSFS{})
+	content, err := loadFromFile(filepath.Join(testDir, testFile), nil, io.OSFS{})
 	if err != nil {
 		t.Error(err)
 	}
@@ -72,7 +71,7 @@ func TestLoadFromFileRelativePath(t *testing.T) {
 
 func TestLoadFromCustomFS(t *testing.T) {
 	fs := fstest.MapFS{}
-	fs["animals/bear.txt"] = &fstest.MapFile{Data: []byte("pooh"), Mode: 0755}
+	fs[filepath.Join("animals", "bear.txt")] = &fstest.MapFile{Data: []byte("pooh"), Mode: 0755}
 
 	content, err := loadFromFile("bear.txt", []string{"animals"}, fs)
 	if err != nil {
