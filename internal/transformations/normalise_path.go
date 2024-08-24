@@ -14,18 +14,15 @@ func normalisePath(data string) (string, bool, error) {
 		return data, false, nil
 	}
 	clean := filepath.Clean(data)
+	if filepath.Separator == '\\' {
+		clean = strings.ReplaceAll(clean, "\\", "/")
+	}
+
 	if clean == "." {
 		return "", true, nil
 	}
 
-	if filepath.Separator == '\\' {
-		clean = strings.ReplaceAll(clean, "\\", "/")
-		if strings.HasPrefix(clean, "//") {
-			clean = "\\\\" + clean[2:]
-		}
-	}
-
-	if data[len(data)-1] == '/' {
+	if data[len(data)-1] == '/' || data[len(data)-1] == '\\' {
 		return clean + "/", true, nil
 	}
 	return clean, data != clean, nil
